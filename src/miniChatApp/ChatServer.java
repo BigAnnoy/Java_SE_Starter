@@ -1,4 +1,4 @@
-package myChat;
+package miniChatApp;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * 
+ * 聊天小程序服务器端
  * @author BigAnnoy Last_update 2018年9月12日上午9:20:10
  *
  */

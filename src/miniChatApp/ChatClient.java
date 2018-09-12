@@ -1,4 +1,4 @@
-package myChat;
+package miniChatApp;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * 
+ * 聊天小程序客户端
  * @author BigAnnoy Last_update 2018年9月11日下午11:10:36
  *
  */
