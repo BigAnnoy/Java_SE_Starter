@@ -38,7 +38,7 @@ public class ChatServer {
 			started = true;
 			while (started) {
 				socket = serverSocket.accept();
-				System.out.println("a client connected");
+				System.out.println("a client connected !");
 				Client client = new Client(socket);
 				clients.add(client);
 				new Thread(client).start();

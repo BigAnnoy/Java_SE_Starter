@@ -7,11 +7,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 
 /**
  * 聊天小程序客户端
+ * 
  * @author BigAnnoy Last_update 2018年9月11日下午11:10:36
  *
  */
@@ -25,9 +27,9 @@ public class ChatClient extends Frame {
 	private TextField textField = new TextField();
 	private DataOutputStream dataOutputStream = null;
 	private DataInputStream dataInputStream = null;
-	private boolean connected = false; 
+	private boolean connected = false;
 //	private String str;
-	
+
 	public static void main(String[] args) {
 		new ChatClient().showMainFrame();
 	}
@@ -46,7 +48,7 @@ public class ChatClient extends Frame {
 				System.exit(0);
 			}
 		});
-		
+
 		connect();
 	}
 
@@ -61,17 +63,23 @@ public class ChatClient extends Frame {
 			System.out.println("No server available!");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void disconnect() {
 		try {
-			dataOutputStream.close();
-			dataOutputStream = null;
-			dataInputStream.close();
-			dataInputStream =null;
-			socket.close();
-			socket = null;
+			if(dataInputStream!= null)
+				{dataOutputStream.close();
+				dataOutputStream = null;
+				}
+			if(dataInputStream!=null) {
+				dataInputStream.close();
+				dataInputStream = null;
+			}
+			if(socket!= null) {
+				socket.close();
+				socket = null;
+				}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,7 +88,7 @@ public class ChatClient extends Frame {
 
 	class TfListener implements ActionListener {
 
-		public void actionPerformed(ActionEvent e) { 
+		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			String str = textField.getText().trim();
 			textField.setText("");
@@ -96,8 +104,10 @@ public class ChatClient extends Frame {
 		}
 
 	}
-	class ReceiveText implements Runnable{
+
+	class ReceiveText implements Runnable {
 		String recText = null;
+
 		public ReceiveText() {
 			try {
 				dataInputStream = new DataInputStream(socket.getInputStream());
@@ -105,17 +115,20 @@ public class ChatClient extends Frame {
 				e.printStackTrace();
 			}
 		}
+
 		@Override
 		public void run() {
 			while (connected) {
 				try {
 					recText = dataInputStream.readUTF();
 					textArea.setText(textArea.getText() + recText + "\n");
-				} catch (IOException e) {
+				} catch (EOFException e) {
+					System.out.println("Server Closed!");
+				}catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
+
 	}
 }
